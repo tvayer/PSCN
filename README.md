@@ -12,7 +12,7 @@ Questions about the paper :
 
 - There is no indication about the labeling procedure used for the classification : is it chosen among a bunch of procedures (which one ?) before the classification using Theorem 2, or is it fixed to one procedure (eigenvector centrality, degree, ...). In this implementation it is fixed to be the betweeness centrality.
 
-- The convolution seems to be made over the dicrete labels/attributes of the graphs in the classification (molecules represented by 0,1,2 etc for MUTAG, PTC..) : what is the sense of such a convolution ?
+- The convolution seems to be made over the dicrete labels/attributes of the graph nodes in the classification (molecules represented by 0,1,2 etc for MUTAG, PTC..) : what is the sense of such a convolution ?
 
 
 
