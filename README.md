@@ -14,7 +14,7 @@ Questions about the paper :
 
 - The convolution seems to be made over the dicrete labels/attributes of the graph nodes in the classification (molecules represented by 0,1,2 etc for MUTAG, PTC..) : what is the sense of such a convolution ?
 
-- For "dummy nodes" (when the size of the receptive field is higher than the size of the graph) what label should be used ??
+- For "dummy nodes" (when the size of the receptive field is higher than the size of the graph) which node attribute should be used ??
 
 
 
