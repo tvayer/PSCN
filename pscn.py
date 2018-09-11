@@ -12,6 +12,13 @@ import numpy as np
 class PSCN():
     def __init__(self,w,s=1,k=10,labeling_procedure_name='betweeness'
                  ,epochs=150,batch_size=25,verbose=0):
+    """
+    w : the length of the node sequence 
+    k : the size of the receptive field
+    labeling_procedure_name : name of the labeling procedure, just implemented betweeness
+    epochs : epochs for the CNN model 
+    batch_size : the batch size for the CNN model
+    """
         self.w=w
         self.s=s
         self.k=k
@@ -25,6 +32,7 @@ class PSCN():
 
         
     def create_model(self):
+        # just binary for now
        model=Sequential()
        model.add(Conv1D(filters=16,kernel_size=self.k,strides=self.k,input_shape=(self.w*self.k,1)))
        model.add(Conv1D(filters=8,kernel_size=10,strides=1))
@@ -36,7 +44,10 @@ class PSCN():
        return model
    
     def process_data(self,X,y=None):
-        "X is a list of networkx graphs"
+        """
+        X is a list of networkx graphs
+        y is a list of class 
+        """
         n=len(X)
         train=[]
         for i in range(n):
@@ -55,7 +66,10 @@ class PSCN():
             return X_preprocessed
    
     def fit(self,X,y=None):
-        "X is a list of networkx graph"
+        """
+        X is a list of networkx graphs
+        y is a list of class 
+        """
         X_preprocessed,y_preprocessed=self.process_data(X,y)
         self.model.fit(X_preprocessed,y_preprocessed)
         
@@ -66,6 +80,12 @@ class PSCN():
 
 
 class ReceptiveFieldMaker():
+    """
+    nx_graph: a networkx graph. A receptive field is created over this graph
+    w : the length of the node sequence 
+    k : the size of the receptive field
+    labeling_procedure_name : name of the labeling procedure, just implemented betweeness
+    """
     def __init__(self,nx_graph,w,s=1,k=10,labeling_procedure_name='betweeness'):
         self.nx_graph=nx_graph
         self.w=w
@@ -203,7 +223,7 @@ class ReceptiveFieldMaker():
 
 
     def neighborhood_assembly(self,vertex):
-        "Output a set of neighbours of the vertex"
+        "Output networkx subgraph"
         N={vertex}
         L={vertex}
         while len(N)<self.k and len(L)>0:
