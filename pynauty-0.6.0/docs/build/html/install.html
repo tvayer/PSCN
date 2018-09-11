@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation &mdash; pynauty 0.6.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.6.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pynauty 0.6.0 documentation" href="index.html" />
+    <link rel="next" title="User’s Guide" href="guide.html" />
+    <link rel="prev" title="Introduction" href="intro.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="guide.html" title="User’s Guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Introduction"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pynauty 0.6.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>The source and documentation of the most recent version of
+<strong>pynauty</strong> is available as a compressed <a class="reference external" href="../pynauty-0.6.0.tar.gz">tar-file</a>.</p>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>To build <strong>pynauty</strong> the following additional components are needed:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Python 2.7 or Python 3.5</li>
+<li>The most recent version of <a class="reference external" href="https://cs.anu.edu.au/people/Brendan.McKay/nauty/">Nauty</a>.</li>
+<li>An ANSI C compiler.</li>
+</ul>
+</div></blockquote>
+<p>In theory, <strong>pynauty</strong> should work on all platforms where Python is
+available and Nauty&#8217;s source can be complied. The instructions below are
+for Linux/Unix environment.</p>
+</div>
+<div class="section" id="build">
+<h2>Build<a class="headerlink" href="#build" title="Permalink to this headline">¶</a></h2>
+<p>Download <a class="reference external" href="../pynauty-0.6.0.tar.gz">pynauty&#8217;s sources</a> as a compressed tar file and unpack it.
+That should create a directory like <code class="docutils literal"><span class="pre">pynauty-X.Y.Z/</span></code> containing the
+source files.</p>
+<p>Download the most recent sources of nauty from <a class="reference external" href="https://cs.anu.edu.au/people/Brendan.McKay/nauty/">Nauty</a> or from <a class="reference external" href="http://pallini.di.uniroma1.it/">Traces</a>.
+That file should be something like <code class="docutils literal"><span class="pre">nautyXYZ.tar.gz</span></code>.</p>
+<p>Change to the directory <code class="docutils literal"><span class="pre">pynauty-X.Y.Z/</span></code> replacing <code class="docutils literal"><span class="pre">X.Y.Z</span></code> with the
+actual version of pynauty:</p>
+<blockquote>
+<div>cd pynauty-X.Y.Z</div></blockquote>
+<p>Unpack <code class="docutils literal"><span class="pre">nautyXYZ.tar.gz</span></code> inside the <code class="docutils literal"><span class="pre">pynauty-X.Y.Z/</span></code> directory.
+Create a symbolic link named <code class="docutils literal"><span class="pre">nauty</span></code> to nauty&#8217;s source directory
+replacing <code class="docutils literal"><span class="pre">XYZ</span></code> with the actual version of Nauty:</p>
+<blockquote>
+<div>ln -s nautyXYZ nauty</div></blockquote>
+<p>Pynauty can be built both for Python 2.7 or Python 3.5.</p>
+<p>At this stage you have the option to create and activate a virtualenv
+and continue the building process within it. Otherwise the building
+process just picks your system wide python version which would be fine
+for most users.</p>
+<p>To build pynauty use the command:</p>
+<blockquote>
+<div>make pynauty</div></blockquote>
+<p>That takes care compiling the necessary object files from nauty&#8217;s source
+than compiling the pynauty Python extension module.</p>
+<p>To run all the tests coming with the package type:</p>
+<blockquote>
+<div>make tests</div></blockquote>
+<p>The test exercises pynauty on a few graphs considered difficult.</p>
+</div>
+<div class="section" id="install">
+<h2>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h2>
+<p>To install pynauty to the standard user location in your home directory
+type:</p>
+<blockquote>
+<div>make user-ins</div></blockquote>
+<p>That puts the pynauty package files into
+~/.local/lib/pythonM.N/site-packages, where M.N is your python&#8217;s version.</p>
+<p>To uninstall type:</p>
+<blockquote>
+<div>make user-unins</div></blockquote>
+<p>If you used a virtualenv you can install/uninstall pynauty within it by:</p>
+<blockquote>
+<div>make virtenv-ins
+make virtenv-unins</div></blockquote>
+<p>Please note, the install/unistall procedures use <code class="docutils literal"><span class="pre">pip</span></code>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#build">Build</a></li>
+<li><a class="reference internal" href="#install">Install</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="intro.html"
+                        title="previous chapter">Introduction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="guide.html"
+                        title="next chapter">User&#8217;s Guide</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/install.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="guide.html" title="User’s Guide"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Introduction"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pynauty 0.6.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Peter Dobsan.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

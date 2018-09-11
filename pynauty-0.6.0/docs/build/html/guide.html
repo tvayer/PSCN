@@ -1,0 +1,383 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>User’s Guide &mdash; pynauty 0.6.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.6.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pynauty 0.6.0 documentation" href="index.html" />
+    <link rel="prev" title="Installation" href="install.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pynauty 0.6.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="user-s-guide">
+<h1>User&#8217;s Guide<a class="headerlink" href="#user-s-guide" title="Permalink to this headline">¶</a></h1>
+<p>The <strong>pynauty</strong> module provides a Graph class to represent graphs and
+functions for isomorphism testing and computing automorphism groups of
+graphs. The graphs can be undirected or directed. They can contain loops
+but no multiple edges. There is always a vertex-coloring associated with
+them. Ordinary, that is not vertex-colored, graphs can be represented
+with all vertices having the same color.</p>
+<div class="section" id="vertex-coloring">
+<h2>Vertex Coloring<a class="headerlink" href="#vertex-coloring" title="Permalink to this headline">¶</a></h2>
+<p>Let V be the set of vertices of a graph G. A partition of vertices is a
+collection of non-empty and pairwise disjoint subsets (parts) of V such
+that the union of these subsets is V. A vertex-coloring defines a
+partition of vertices, with vertices of the same color belonging to the
+same part. Similarly, a partition of vertices defines a vertex-coloring
+by giving the same distinct color to vertices in the same part. So
+vertex-coloring and partition of vertices are essentially the same.</p>
+<p>In <strong>pynauty</strong>, a vertex-coloring is specified as an ordered partition
+of vertices. The order of parts is significant but the order of vertices
+within each part is not. Such an ordered partition is represented by a
+list of sets where each set in the list specifies a subset of the vertex
+set. So the color of a vertex is the index of the part containing the
+vertex. The subsets must be non-empty and pairwise disjoint. It is not a
+requirement to cover all vertices, all the vertices not appearing are
+put together in a single part of their own.</p>
+<p>The significance of vertex-coloring while computing with graphs in
+pynauty is the following. The partition induced by a vertex coloring
+imposes the restriction on possible automorphisms of the graph that
+vertices must stay in their original part (i.e. keep their color) under
+any automorphism.</p>
+<p>Two vertex-colored graphs are <em>isomorphic</em> if there is a bijection between
+their vertex sets which preserves adjacency and color.</p>
+</div>
+<div class="section" id="module-pynauty">
+<span id="classes"></span><h2>Classes<a class="headerlink" href="#module-pynauty" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pynauty.Graph">
+<em class="property">class </em><code class="descclassname">pynauty.</code><code class="descname">Graph</code><span class="sig-paren">(</span><em>number_of_vertices</em>, <em>directed=False</em>, <em>adjacency_dict={}</em>, <em>vertex_coloring=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynauty/graph.html#Graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynauty.Graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Graph instantiates an adjacency dictionary based graph object.
+It can represent vertex colored, directed or undirected graphs.</p>
+<dl class="method">
+<dt id="pynauty.Graph.connect_vertex">
+<code class="descname">connect_vertex</code><span class="sig-paren">(</span><em>v</em>, <em>neighbors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynauty/graph.html#Graph.connect_vertex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynauty.Graph.connect_vertex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect a vertex to some other vertices.</p>
+<dl class="docutils">
+<dt><em>v</em></dt>
+<dd>A vertex of the Graph. The <em>tail</em> of the arcs if the Graph
+is directed.</dd>
+<dt><em>neighbors</em></dt>
+<dd>A vertex or a list of vertices to which <em>v</em> should be connected.
+The <em>heads</em> of the arcs if the Graph is directed.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynauty.Graph.set_adjacency_dict">
+<code class="descname">set_adjacency_dict</code><span class="sig-paren">(</span><em>adjacency_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynauty/graph.html#Graph.set_adjacency_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynauty.Graph.set_adjacency_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the adjacency relations of the Graph.</p>
+<dl class="docutils">
+<dt><em>adjacency_dict</em></dt>
+<dd>key: a vertex, value: a list of vertices linked to the
+key vertex.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynauty.Graph.set_vertex_coloring">
+<code class="descname">set_vertex_coloring</code><span class="sig-paren">(</span><em>vertex_coloring</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynauty/graph.html#Graph.set_vertex_coloring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynauty.Graph.set_vertex_coloring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define a vertex coloring of the Graph.</p>
+<dl class="docutils">
+<dt><em>vertex_coloring</em></dt>
+<dd>A list of disjoint sets of vertices representing a
+partition of the vertex set; vertices not listed are
+placed into a single additional part.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pynauty.autgrp">
+<code class="descclassname">pynauty.</code><code class="descname">autgrp</code><span class="sig-paren">(</span><em>g</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynauty/graph.html#autgrp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynauty.autgrp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the automorphism group of a graph.</p>
+<dl class="docutils">
+<dt><em>g</em></dt>
+<dd>A Graph object.</dd>
+<dt>return -&gt; (generators, grpsize1, grpsize2, orbits, numorbits)</dt>
+<dd>For the detailed description of the returned components, see
+Nauty&#8217;s documentation.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pynauty.isomorphic">
+<code class="descclassname">pynauty.</code><code class="descname">isomorphic</code><span class="sig-paren">(</span><em>a</em>, <em>b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynauty/graph.html#isomorphic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynauty.isomorphic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine if two graphs are isomorphic.</p>
+<dl class="docutils">
+<dt><em>a,b</em></dt>
+<dd>Two Graph objects.</dd>
+<dt>return -&gt;</dt>
+<dd>True if <em>a</em> and <em>b</em> are isomorphic graphs, False otherwise,</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pynauty.certificate">
+<code class="descclassname">pynauty.</code><code class="descname">certificate</code><span class="sig-paren">(</span><em>g</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynauty/graph.html#certificate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynauty.certificate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a certificate based on the canonical labeling of vertices.</p>
+<dl class="docutils">
+<dt><em>g</em></dt>
+<dd>A Graph object.</dd>
+<dt>return -&gt;</dt>
+<dd>The certificate as a byte string.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pynauty.delete_random_edge">
+<code class="descclassname">pynauty.</code><code class="descname">delete_random_edge</code><span class="sig-paren">(</span><em>g</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pynauty/graph.html#delete_random_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pynauty.delete_random_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a random edge from a graph.</p>
+<dl class="docutils">
+<dt><em>g</em></dt>
+<dd>A Graph object.</dd>
+<dt>return -&gt;</dt>
+<dd>The deleted edge as a tuple or (None, None) if no edge is left.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>These examples show using <strong>pynauty</strong> in interactive sessions.  We
+assume that the <strong>pynauty</strong> module has been imported by:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pynauty</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>Create a Graph object by connetcting some vertices step by step:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">connect_vertex</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">connect_vertex</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">connect_vertex</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">Graph(number_of_vertices=5, directed=False,</span>
+<span class="go"> adjacency_dict = {</span>
+<span class="go">  0: [1, 2, 3],</span>
+<span class="go">  2: [1, 3, 4],</span>
+<span class="go">  4: [3],</span>
+<span class="go"> },</span>
+<span class="go"> vertex_coloring = [</span>
+<span class="go"> ],</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>The same graph can be created in one step by supplying the adjacency
+relations to Graph:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">number_of_vertices</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+<span class="gp">... </span><span class="n">adjacency_dict</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span> <span class="mi">0</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<span class="gp">... </span> <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+<span class="gp">... </span> <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+<span class="gp">... </span> <span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>Compute the automorphism group of the graph:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">autgrp</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">([[3, 4, 2, 0, 1]], 2.0, 0, [0, 1, 2, 0, 1], 3)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>Let&#8217;s add a new edge and see how the automorphism group would change:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">connect_vertex</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">Graph(number_of_vertices=5, directed=False,</span>
+<span class="go"> adjacency_dict = {</span>
+<span class="go">  0: [1, 2, 3],</span>
+<span class="go">  1: [3],</span>
+<span class="go">  2: [1, 3, 4],</span>
+<span class="go">  4: [3],</span>
+<span class="go"> },</span>
+<span class="go"> vertex_coloring = [</span>
+<span class="go"> ],</span>
+<span class="go">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">autgrp</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">([[0, 1, 3, 2, 4], [1, 0, 2, 3, 4]], 4.0, 0, [0, 0, 2, 2, 4], 3)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>Fixing vertex 3 by coloring reduces the automorphism group:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">set_vertex_coloring</span><span class="p">([</span><span class="nb">set</span><span class="p">([</span><span class="mi">3</span><span class="p">])])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">Graph(number_of_vertices=5, directed=False,</span>
+<span class="go"> adjacency_dict = {</span>
+<span class="go">  0: [1, 2, 3],</span>
+<span class="go">  1: [3],</span>
+<span class="go">  2: [1, 3, 4],</span>
+<span class="go">  4: [3],</span>
+<span class="go"> },</span>
+<span class="go"> vertex_coloring = [</span>
+<span class="go">  set([3]),</span>
+<span class="go">  set([0, 1, 2, 4]),</span>
+<span class="go"> ],</span>
+<span class="go">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">autgrp</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">([[1, 0, 2, 3, 4]], 2.0, 0, [0, 0, 2, 3, 4], 4)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>Testing two graphs for isomorphism:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">Graph</span><span class="p">(</span><span class="n">number_of_vertices</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+ <span class="n">adjacency_dict</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+  <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+  <span class="mi">5</span><span class="p">:</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+  <span class="mi">6</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+  <span class="mi">7</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+  <span class="mi">8</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+  <span class="mi">9</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+  <span class="mi">10</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+  <span class="mi">11</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+  <span class="mi">12</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+ <span class="p">},</span>
+ <span class="n">vertex_coloring</span> <span class="o">=</span> <span class="p">[</span>
+ <span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="n">b</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="n">delete_random_edge</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="n">Graph</span><span class="p">(</span><span class="n">number_of_vertices</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+ <span class="n">adjacency_dict</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="mi">0</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+  <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+  <span class="mi">5</span><span class="p">:</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+  <span class="mi">6</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+  <span class="mi">7</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+  <span class="mi">8</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+  <span class="mi">9</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+  <span class="mi">10</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+  <span class="mi">11</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+  <span class="mi">12</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+ <span class="p">},</span>
+ <span class="n">vertex_coloring</span> <span class="o">=</span> <span class="p">[</span>
+ <span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="n">isomorphic</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="bp">False</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">User&#8217;s Guide</a><ul>
+<li><a class="reference internal" href="#vertex-coloring">Vertex Coloring</a></li>
+<li><a class="reference internal" href="#module-pynauty">Classes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="install.html"
+                        title="previous chapter">Installation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/guide.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Installation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pynauty 0.6.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Peter Dobsan.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>
