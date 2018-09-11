@@ -1,6 +1,6 @@
 "Patchy San"
 
-from graph import *
+import networkx as nx
 from networkx import convert_node_labels_to_integers
 from pynauty.graph import canonical_labeling,NautyGraph
 import copy
@@ -36,10 +36,11 @@ class PSCN():
        return model
    
     def process_data(self,X,y=None):
+        "X is a list of networkx graphs"
         n=len(X)
         train=[]
         for i in range(n):
-           rfMaker=ReceptiveFieldMaker(X[i].nx_graph,w=self.w
+           rfMaker=ReceptiveFieldMaker(X[i],w=self.w
                                        ,k=self.k,s=self.s
                                        ,labeling_procedure_name=self.labeling_procedure_name)
            forcnn=rfMaker.make_()
@@ -54,6 +55,7 @@ class PSCN():
             return X_preprocessed
    
     def fit(self,X,y=None):
+        "X is a list of networkx graph"
         X_preprocessed,y_preprocessed=self.process_data(X,y)
         self.model.fit(X_preprocessed,y_preprocessed)
         
