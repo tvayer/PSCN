@@ -6,18 +6,38 @@ from pynauty.graph import canonical_labeling,NautyGraph
 import copy
 from keras.wrappers.scikit_learn import KerasClassifier
 from keras.models import Model,Sequential
-from keras.layers import Conv1D,Dense,Dropout,Flatten,Activation,Input
+from keras.layers import Conv1D,Dense,Dropout,Flatten
 import numpy as np
 import time
 import tensorflow as tf
 import utils
-# your code here
 
 
 class PSCN():
-    def __init__(self,w,s=1,k=10,labeling_procedure_name='betweeness'
-                 ,epochs=150,batch_size=25,verbose=0,use_node_deg=False
-                 ,use_preprocess_data=False,gpu=False,multiclass=None,one_hot=0,attr_dim=1,dummy_value=-1):
+    def __init__(self,w,s=1,k=10
+                 ,labeling_procedure_name='betweeness'
+                 ,epochs=150,batch_size=25
+                 ,verbose=0
+                 ,use_node_deg=False
+                 ,use_preprocess_data=False
+                 ,gpu=False
+                 ,multiclass=None
+                 ,one_hot=0
+                 ,attr_dim=1
+                 ,dummy_value=-1):
+        """
+        w : width parameter
+        s: stride parameter
+        k: receptive field size paremeter
+        labeling_procedure_name : the labeling procedure for ranking the nodes between them. Only betweeness centrality is implemented.
+        epochs: number of epochs for the CNN
+        batch_size : batch size for training the CNN
+        use_node_deg : wether to use node degree as label for unlabeled graphs (IMDB for e.g)
+        multiclass : if the classification is not binary it is the number of classes
+        one_hot : if nodes attributes are discrete it is the number of unique attributes
+        attr_dim : if nodes attributes are multidimensionnal it is the dimension of the attributes
+        dummy_value  which value should be used for dummy nodes (see paper)
+        """
         self.w=w
         self.s=s
         self.k=k
@@ -62,7 +82,7 @@ class PSCN():
            model.compile(loss="binary_crossentropy",optimizer="rmsprop",metrics=["accuracy"])    
        return model
    
-    def process_data(self,X,y=None):
+    def process_data(self,X,y=None): # X is a list of Graph objects
         start=time.time()
         n=len(X)
         train=[]
@@ -89,7 +109,7 @@ class PSCN():
         else :
             return X_preprocessed
    
-    def fit(self,X,y=None):
+    def fit(self,X,y=None): 
         if not self.use_preprocess_data:
             X_preprocessed,y_preprocessed=self.process_data(X,y)
         else:
@@ -168,9 +188,11 @@ class ReceptiveFieldMaker():
     def make_(self):
         "Result on one (w,k,length_attri) list (usually (w,k,1)) for 1D CNN "
         forcnn=[]
+        self.all_subgraph=[]
         f=self.select_node_sequence()
         for graph in f :
             frelabel=nx.relabel_nodes(graph,nx.get_node_attributes(graph,'labeling')) #rename the nodes wrt the labeling
+            self.all_subgraph.append(frelabel)
             if self.one_hot>0:
                 forcnn.append([utils.indices_to_one_hot(x[1],self.one_hot) for x in sorted(nx.get_node_attributes(frelabel,'attr_name').items(),key=lambda x:x[0])])
             else:
@@ -370,7 +392,7 @@ class ReceptiveFieldMaker():
         
         st=time.time()
 
-        #wl_subgraph_normalized=self.wl_normalization(subgraph)['labeled_graph']
+        #wl_subgraph_normalized=self.wl_normalization(subgraph)['labeled_graph'] 
         #g_relabel=convert_node_labels_to_integers(wl_subgraph_normalized)
 
         g_relabel=convert_node_labels_to_integers(subgraph)
@@ -395,7 +417,7 @@ class ReceptiveFieldMaker():
 
         "U set of vertices. Return le receptive field du vertex (un graph normalisé)"
         ranked_subgraph_by_labeling_procedure=self.labeling_procedure(subgraph)['labeled_graph']
-        original_order_to_respect=nx.get_node_attributes(ranked_subgraph_by_labeling_procedure,'labeling') # à changer je pense
+        original_order_to_respect=nx.get_node_attributes(ranked_subgraph_by_labeling_procedure,'labeling')
         subgraph_U=self.compute_subgraph_ranking(subgraph,vertex,original_order_to_respect) #ordonne les noeuds w.r.t labeling procedure
 
         if len(subgraph_U.nodes())>self.k:
