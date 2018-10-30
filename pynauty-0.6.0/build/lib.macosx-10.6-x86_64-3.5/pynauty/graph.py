@@ -19,7 +19,7 @@ GNU General Public License for more details.
 '''
 
 __all__ = [
-    'NautyGraph',
+    'Graph',
     'autgrp',
     'isomorphic',
     'certificate',
@@ -30,7 +30,7 @@ from . import nautywrap
 import random
 
 
-class NautyGraph(object):
+class Graph(object):
     '''
     Graph instantiates an adjacency dictionary based graph object.
     It can represent vertex colored, directed or undirected graphs.
@@ -164,9 +164,10 @@ def autgrp(g):
         For the detailed description of the returned components, see
         Nauty's documentation.
     '''
-    if not isinstance(g, NautyGraph):
+    if not isinstance(g, Graph):
         raise TypeError
     return nautywrap.graph_autgrp(g)
+
 
 def certificate(g):
     '''
@@ -178,7 +179,7 @@ def certificate(g):
     return ->
         The certificate as a byte string.
     '''
-    if not isinstance(g, NautyGraph):
+    if not isinstance(g, Graph):
         raise TypeError
     return nautywrap.graph_cert(g)
 
@@ -208,10 +209,11 @@ def canonical_labeling(g):
    return ->
        The labeling as a list.
    '''
-   if not isinstance(g, NautyGraph):
+   if not isinstance(g, Graph):
        raise TypeError
    return nautywrap.graph_canonical_labeling(g)
-   
+
+
 def delete_random_edge(g):
     '''
     Delete a random edge from a graph.

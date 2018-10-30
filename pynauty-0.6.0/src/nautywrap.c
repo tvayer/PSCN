@@ -1,6 +1,8 @@
 /*
    nautywrap.c
+
 Copyright (c) 2015 Peter Dobsan
+
 This program is free software; you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the
 Free Software Foundation; either version 3 of the License, or (at your
@@ -543,8 +545,6 @@ graph_cert(PyObject *self, PyObject *args)
     destroy_nygraph(g);
     return pyret;
 }
-
-
 static char graph_canonical_labeling_docs[] =
 "graph_canonical_labeling(g): \n\
     Return the unique canonical labeling of NyGraph 'g'.\n";
@@ -596,6 +596,7 @@ graph_canonical_labeling(PyObject *self, PyObject *args)
 }
 
 
+
 //  Python module initialization  =============================================
 
 static PyMethodDef nautywrap_methods[] = {
@@ -632,3 +633,4 @@ initnautywrap(void) {
             "Graph (auto/iso)morphism wrapper for nauty");
 #endif
 }
+

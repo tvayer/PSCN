@@ -2,7 +2,7 @@
 
 from networkx import nx
 from networkx import convert_node_labels_to_integers
-from pynauty.graph import canonical_labeling,NautyGraph
+from pynauty.graph import canonical_labeling,Graph
 import copy
 from keras.wrappers.scikit_learn import KerasClassifier
 from keras.models import Model,Sequential
@@ -398,7 +398,7 @@ class ReceptiveFieldMaker():
         g_relabel=convert_node_labels_to_integers(subgraph)
         labeled_graph=nx.Graph(g_relabel)
 
-        nauty_graph=NautyGraph(len(g_relabel.nodes()),directed=False)
+        nauty_graph=Graph(len(g_relabel.nodes()),directed=False)
         nauty_graph.set_adjacency_dict({n:list(nbrdict) for n,nbrdict in g_relabel.adjacency()})
 
         labels_dict=nx.get_node_attributes(g_relabel,'labeling')
