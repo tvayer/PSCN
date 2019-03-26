@@ -52,6 +52,7 @@ class PSCN():
         self.multiclass=multiclass
         self.one_hot=one_hot
         self.attr_dim=attr_dim
+        self.original_dim=attr_dim
         self.dummy_value=dummy_value
         self.model = KerasClassifier(build_fn=self.create_model
                                      ,epochs=self.epochs, 
@@ -63,19 +64,21 @@ class PSCN():
         self.times_process_details['compute_subgraph_ranking']=[]
         self.times_process_details['labeling_procedure']=[]       
         self.times_process_details['first_labeling_procedure']=[]
+
         
         if self.one_hot>0:
             self.attr_dim=self.one_hot
-            
-        if np.array([self.dummy_value]).ravel().shape[0]!=self.attr_dim: #dirty
-            raise BadDummyValueDef('The dummy value of nodes is not correctly defined. Must be {0} dimensionnal but found {1}'.format(self.attr_dim,np.array([self.dummy_value]).ravel().shape[0]))
+
+        if np.array([self.dummy_value]).ravel().shape[0]!=self.original_dim: #quick and dirty
+            raise BadDummyValueDef('The dummy value of nodes is not correctly defined. Must be {0} dimensionnal but found {1}'.format(self.original_dim,np.array([self.dummy_value]).ravel().shape[0]))
+                  
 
     def _check_attr_dim(self,X):
         alldim=[]
         for graph in X:
             for attr in graph.all_matrix_attr():
-                alldim.append(len(attr))
-        return np.all(np.array(alldim)==self.attr_dim),np.array(alldim)
+                alldim.append(np.array([self.dummy_value]).ravel().shape[0])
+        return np.all(np.array(alldim)==self.original_dim),np.array(alldim)
             
         
     def create_model(self):
@@ -100,7 +103,7 @@ class PSCN():
         test_dim=self._check_attr_dim(X)
         if not test_dim[0]:
             alldim=test_dim[1]
-            raise BadAttriDimError('Attribute dimension mismatches, all attributes supposed to be {0} but found {1} dimensionnal attributes '.format(self.attr_dim,alldim[np.where(alldim!=self.attr_dim)[0]]))
+            raise BadAttriDimError('Attribute dimension mismatches, all attributes supposed to be {0} but found {1} dimensionnal attributes '.format(self.original_dim,alldim[np.where(alldim!=self.original_dim)[0]]))
         for i in range(n):
             rfMaker=ReceptiveFieldMaker(X[i].nx_graph,w=self.w,k=self.k,s=self.s
                                         ,labeling_procedure_name=self.labeling_procedure_name
