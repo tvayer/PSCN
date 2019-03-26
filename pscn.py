@@ -11,6 +11,7 @@ import numpy as np
 import time
 import tensorflow as tf
 import utils
+from custom_errors import BadShapeError,BadAttriDimError,BadDummyValueDef
 
 
 class PSCN():
@@ -65,7 +66,17 @@ class PSCN():
         
         if self.one_hot>0:
             self.attr_dim=self.one_hot
+            
+        if np.array([self.dummy_value]).ravel().shape[0]!=self.attr_dim: #dirty
+            raise BadDummyValueDef('The dummy value of nodes is not correctly defined. Must be {0} dimensionnal but found {1}'.format(self.attr_dim,np.array([self.dummy_value]).ravel().shape[0]))
 
+    def _check_attr_dim(self,X):
+        alldim=[]
+        for graph in X:
+            for attr in graph.all_matrix_attr():
+                alldim.append(len(attr))
+        return np.all(np.array(alldim)==self.attr_dim),np.array(alldim)
+            
         
     def create_model(self):
        model=Sequential()
@@ -86,6 +97,10 @@ class PSCN():
         start=time.time()
         n=len(X)
         train=[]
+        test_dim=self._check_attr_dim(X)
+        if not test_dim[0]:
+            alldim=test_dim[1]
+            raise BadAttriDimError('Attribute dimension mismatches, all attributes supposed to be {0} but found {1} dimensionnal attributes '.format(self.attr_dim,alldim[np.where(alldim!=self.attr_dim)[0]]))
         for i in range(n):
             rfMaker=ReceptiveFieldMaker(X[i].nx_graph,w=self.w,k=self.k,s=self.s
                                         ,labeling_procedure_name=self.labeling_procedure_name
@@ -131,7 +146,7 @@ class PSCN():
             X_preprocessed=self.process_data(X)
         else:
             X_preprocessed=X
-        return self.model.predict(X_preprocessed)
+        return self.model.predict(X_preprocessed).ravel()
     
     def return_embedding(self,X):
         X_preprocessed=self.process_data(X)
@@ -197,6 +212,8 @@ class ReceptiveFieldMaker():
                 forcnn.append([utils.indices_to_one_hot(x[1],self.one_hot) for x in sorted(nx.get_node_attributes(frelabel,'attr_name').items(),key=lambda x:x[0])])
             else:
                 forcnn.append([x[1] for x in sorted(nx.get_node_attributes(frelabel,'attr_name').items(),key=lambda x:x[0])])
+        if np.array(forcnn).shape[0]!=self.w or np.array(forcnn).shape[1]!=self.k :
+            raise BadShapeError('Shapes do not match : {0} instead of {1}'.format(np.array(forcnn).shape,(self.w,self.k)))
         return forcnn
     
     def labeling_procedure(self,graph):   

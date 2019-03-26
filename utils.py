@@ -4,6 +4,7 @@ import argparse
 import matplotlib.colors as mcol
 from matplotlib import cm
 import networkx as nx 
+from custom_errors import NotRepresentableError
 
 def indices_to_one_hot(number, nb_classes,label_dummy=-1):
     """Convert an iterable of indices to one-hot encoded labels."""
@@ -22,11 +23,23 @@ def graph_colors(nx_graph,vmin=0,vmax=9):
     cpick.set_array([])
     val_map = {}
     for k,v in nx.get_node_attributes(nx_graph,'attr_name').items():
-        val_map[k]=cpick.to_rgba(v)
+        if isinstance(v,int):
+            val_map[k]=cpick.to_rgba(v)
+        elif isinstance(v,list):
+            if len(v)>1:
+                raise NotRepresentableError('Feature must be one dimensionnal in order to be displayed')
+            val_map[k]=cpick.to_rgba(v[0])
+            
     colors=[]
     for node in nx_graph.nodes():
         colors.append(val_map[node])
     return colors
+    
+def pos_diff(pos,x_off=0,y_off=0):
+    pos_higher = {}
+    for k, v in pos.items():
+        pos_higher[k] = (v[0]+x_off, v[1]+y_off) 
+    return pos_higher
     
 def allnan(v): #fonctionne juste pour les dict de tuples
     from math import isnan
