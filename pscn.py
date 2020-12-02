@@ -367,6 +367,7 @@ class ReceptiveFieldMaker():
     def rank_label_wrt_dict(self,subgraph,label_dict,dict_to_respect):
 
         all_distinc_labels=list(set(label_dict.values()))
+        all_distinc_labels.sort()
         new_ordered_dict=label_dict     
 
         latest_biggest_label=0
